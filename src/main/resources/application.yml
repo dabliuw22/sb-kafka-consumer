@@ -7,9 +7,11 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
+      # nombre del grupo de consumidores
       group-id: grupo-one
       #key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       #value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
 kafka:
+  # donde los mensajes se consumen
   topic: message.t
