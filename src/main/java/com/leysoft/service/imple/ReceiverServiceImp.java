@@ -1,3 +1,4 @@
+
 package com.leysoft.service.imple;
 
 import org.slf4j.Logger;
@@ -17,20 +18,23 @@ import com.leysoft.service.inter.ReceiverService;
 @Service
 public class ReceiverServiceImp implements ReceiverService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ReceiverServiceImp.class);
-	
-	@Autowired
-	private ObjectMapper mapper;
-	
-	@KafkaListener(topics = {"${kafka.topic}"})
-	@Override
-	public void receive(@Payload CustomMessage payload, 
-			@Headers MessageHeaders headers) throws JsonProcessingException {
-		headers.keySet().forEach(key -> {
-			Object value = headers.get(key);
-			LOGGER.info("Header <{}: {}>", key, value);
-		});
-		String info = mapper.writeValueAsString(payload);
-		LOGGER.info("receive: {}", info);
-	}
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReceiverServiceImp.class);
+
+    @Autowired
+    private ObjectMapper mapper;
+
+    @KafkaListener(
+            topics = {
+                "${kafka.topic}"
+            })
+    @Override
+    public void receive(@Payload CustomMessage payload, @Headers MessageHeaders headers)
+            throws JsonProcessingException {
+        headers.keySet().forEach(key -> {
+            Object value = headers.get(key);
+            LOGGER.info("Header <{}: {}>", key, value);
+        });
+        String info = mapper.writeValueAsString(payload);
+        LOGGER.info("receive: {}", info);
+    }
 }

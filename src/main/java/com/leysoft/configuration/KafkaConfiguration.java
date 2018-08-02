@@ -1,3 +1,4 @@
+
 package com.leysoft.configuration;
 
 import java.util.HashMap;
@@ -21,13 +22,15 @@ import com.leysoft.model.CustomMessage;
 @EnableKafka
 @Configuration
 public class KafkaConfiguration {
-	
-	@Value(value = "${spring.kafka.bootstrap-servers}")
-	private String kafkaServer;
-	
-	@Value(value = "${spring.kafka.consumer.group-id}")
-	private String kafkaGroupId;
-	
+
+    @Value(
+            value = "${spring.kafka.bootstrap-servers}")
+    private String kafkaServer;
+
+    @Value(
+            value = "${spring.kafka.consumer.group-id}")
+    private String kafkaGroupId;
+
     @Bean
     public ConsumerFactory<String, CustomMessage> consumerFactory() {
         Map<String, Object> properties = new HashMap<>();
@@ -35,14 +38,15 @@ public class KafkaConfiguration {
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        return new DefaultKafkaConsumerFactory<>(properties, 
-        		new StringDeserializer(), new JsonDeserializer<>(CustomMessage.class));
+        return new DefaultKafkaConsumerFactory<>(properties, new StringDeserializer(),
+                new JsonDeserializer<>(CustomMessage.class));
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, CustomMessage>> 
-    		kafkaListenerContainerFactory() {
-    	ConcurrentKafkaListenerContainerFactory<String, CustomMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, CustomMessage>>
+            kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, CustomMessage> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
